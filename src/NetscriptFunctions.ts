@@ -220,7 +220,7 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
   };
 
   const getRunningScriptsByFilename = function (fn: string): RunningScript[] {
-    var runningScripts: RunningScript[] = [];
+    const runningScripts: RunningScript[] = [];
     for (const server of GetAllServers()) {
       const serverRunningScripts = findRunningScriptsByFilename(fn, server);
       runningScripts.push(...serverRunningScripts);
@@ -2270,7 +2270,6 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
         return createPublicRunningScript(runningScript);
       },
     getRunningScriptsByFilename:
-      (ctx: NetscriptContext) =>
       (fn: string): IRunningScriptDef[] => {
         const runningScripts = getRunningScriptsByFilename(fn);
         if (runningScripts.length == 0) return runningScripts;
