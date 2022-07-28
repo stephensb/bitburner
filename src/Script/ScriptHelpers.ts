@@ -109,7 +109,6 @@ export function findRunningScriptByPid(pid: number, server: BaseServer): Running
   return null;
 }
 
-
 //Returns an array of RunningScript objects matching the filename on the
 //designated server, empty array if none found
 export function findRunningScriptsByFilename(filename: string, server: BaseServer): RunningScript[] {

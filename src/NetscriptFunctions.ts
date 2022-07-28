@@ -2269,12 +2269,11 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
         if (runningScript === null) return null;
         return createPublicRunningScript(runningScript);
       },
-    getRunningScriptsByFilename:
-      (fn: string): IRunningScriptDef[] => {
-        const runningScripts = getRunningScriptsByFilename(fn);
-        if (runningScripts.length == 0) return runningScripts;
-        return runningScripts.map(createPublicRunningScript);
-      },
+    getRunningScriptsByFilename: (fn: string): IRunningScriptDef[] => {
+      const runningScripts = getRunningScriptsByFilename(fn);
+      if (runningScripts.length == 0) return runningScripts;
+      return runningScripts.map(createPublicRunningScript);
+    },
     getHackTime:
       (ctx: NetscriptContext) =>
       (_hostname: unknown = workerScript.hostname): number => {

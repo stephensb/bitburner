@@ -5825,8 +5825,7 @@ export interface NS {
    * @param filename - Filename of the script.
    * @returns The an array of info about the running scripts if found, but an emtpy array  otherwise.
    */
-  getRunningScriptsByFilename(
-    filename: string): RunningScript[];
+  getRunningScriptsByFilename(filename: string): RunningScript[];
 
   /**
    * Get cost of purchasing a server.
