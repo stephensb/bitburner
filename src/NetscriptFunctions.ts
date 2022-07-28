@@ -25,7 +25,7 @@ import { Terminal } from "./Terminal";
 import { Player } from "./Player";
 import { Programs } from "./Programs/Programs";
 import { Script } from "./Script/Script";
-import { findRunningScript, findRunningScriptByPid } from "./Script/ScriptHelpers";
+import { findRunningScript, findRunningScriptByPid, findRunningScriptsByFilename } from "./Script/ScriptHelpers";
 import { isScriptFilename } from "./Script/isScriptFilename";
 import { PromptEvent } from "./ui/React/PromptManager";
 
@@ -217,6 +217,15 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
       if (runningScript) return runningScript;
     }
     return null;
+  };
+
+  const getRunningScriptsByFilename = function (fn: string): RunningScript[] {
+    var runningScripts: RunningScript[] = [];
+    for (const server of GetAllServers()) {
+      const serverRunningScripts = findRunningScriptsByFilename(fn, server);
+      runningScripts.push(...serverRunningScripts);
+    }
+    return runningScripts;
   };
 
   const getRunningScript = (ctx: NetscriptContext, ident: ScriptIdentifier): RunningScript | null => {
@@ -585,12 +594,31 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
     },
     player(funcName: string, p: unknown): IPlayer {
       const fakePlayer = {
+        hacking: undefined,
         hp: undefined,
+        max_hp: undefined,
+        strength: undefined,
+        defense: undefined,
+        dexterity: undefined,
+        agility: undefined,
+        charisma: undefined,
+        intelligence: undefined,
+        hacking_exp: undefined,
+        strength_exp: undefined,
+        defense_exp: undefined,
+        dexterity_exp: undefined,
+        agility_exp: undefined,
+        charisma_exp: undefined,
+        hacking_chance_mult: undefined,
         mults: undefined,
         numPeopleKilled: undefined,
         money: undefined,
         city: undefined,
         location: undefined,
+        hasWseAccount: undefined,
+        hasTixApiAccess: undefined,
+        has4SData: undefined,
+        has4SDataTixApi: undefined,
         bitNodeN: undefined,
         totalPlaytime: undefined,
         playtimeSinceLastAug: undefined,
@@ -2241,6 +2269,13 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
         if (runningScript === null) return null;
         return createPublicRunningScript(runningScript);
       },
+    getRunningScriptsByFilename:
+      (ctx: NetscriptContext) =>
+      (fn: string): IRunningScriptDef[] => {
+        const runningScripts = getRunningScriptsByFilename(fn);
+        if (runningScripts.length == 0) return runningScripts;
+        return runningScripts.map(createPublicRunningScript);
+      },
     getHackTime:
       (ctx: NetscriptContext) =>
       (_hostname: unknown = workerScript.hostname): number => {
@@ -2427,6 +2462,10 @@ export function NetscriptFunctions(workerScript: WorkerScript): NS {
         money: Player.money,
         city: Player.city,
         location: Player.location,
+        hasWseAccount: Player.hasWseAccount,
+        hasTixApiAccess: Player.hasTixApiAccess,
+        has4SData: Player.has4SData,
+        has4SDataTixApi: Player.has4SDataTixApi,
         bitNodeN: Player.bitNodeN,
         totalPlaytime: Player.totalPlaytime,
         playtimeSinceLastAug: Player.playtimeSinceLastAug,
